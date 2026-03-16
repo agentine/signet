@@ -75,9 +75,10 @@ export function serialize(value: unknown, options: HashOptions = {}): string {
 
         if (ArrayBuffer.isView(val)) {
           const typeName = respectType ? val.constructor.name + ':' : '';
-          const bytes = new Uint8Array(
-            val instanceof Uint8Array ? val : val.buffer
-          );
+          const bytes =
+            val instanceof Uint8Array
+              ? val
+              : new Uint8Array(val.buffer as ArrayBuffer, val.byteOffset, val.byteLength);
           return typeName + 'ArrayBuffer:[' + bytes.join(',') + ']';
         }
 
