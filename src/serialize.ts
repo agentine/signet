@@ -10,6 +10,7 @@ function isNativeFunction(f: unknown): boolean {
 interface ResolvedOptions {
   excludeKeys?: (key: string) => boolean;
   excludeValues: boolean;
+  ignoreUnknown: boolean;
   respectType: boolean;
   respectFunctionNames: boolean;
   respectFunctionProperties: boolean;
@@ -23,6 +24,7 @@ function resolveOptions(options: HashOptions): ResolvedOptions {
   return {
     excludeKeys: options.excludeKeys,
     excludeValues: options.excludeValues ? true : false,
+    ignoreUnknown: options.ignoreUnknown === true ? true : false,
     respectType: options.respectType === false ? false : true,
     respectFunctionNames: options.respectFunctionNames === false ? false : true,
     respectFunctionProperties: options.respectFunctionProperties === false ? false : true,
@@ -100,6 +102,10 @@ function createDispatcher(
         if (handler) {
           handler(obj);
         } else {
+          if (opts.ignoreUnknown) {
+            write('[' + objType + ']');
+            return;
+          }
           throw new Error('Unknown object type "' + objType + '"');
         }
       } else {

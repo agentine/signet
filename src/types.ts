@@ -3,6 +3,7 @@ export interface HashOptions {
   encoding?: 'hex' | 'base64' | 'buffer' | 'binary';
   excludeKeys?: (key: string) => boolean;
   excludeValues?: boolean;
+  ignoreUnknown?: boolean;
   respectType?: boolean;
   respectFunctionNames?: boolean;
   respectFunctionProperties?: boolean;

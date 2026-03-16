@@ -19,16 +19,28 @@ hash.MD5 = function (value: unknown, options?: Omit<HashOptions, 'algorithm'>): 
 };
 
 hash.keys = function (value: unknown, options?: HashOptions): string | Buffer {
-  return computeHash(value, { ...options, excludeValues: true });
+  return computeHash(value, { ...options, excludeValues: true, algorithm: 'sha1', encoding: 'hex' });
+};
+
+hash.keysMD5 = function (value: unknown, options?: HashOptions): string | Buffer {
+  return computeHash(value, { ...options, excludeValues: true, algorithm: 'md5', encoding: 'hex' });
 };
 
 hash.writeToStream = function (
   value: unknown,
-  options: HashOptions | undefined,
-  stream: Writable
+  optionsOrStream: HashOptions | Writable | undefined,
+  stream?: Writable
 ): void {
-  const serialized = serialize(value, options ?? {});
-  stream.write(serialized);
+  let opts: HashOptions = {};
+  let target: Writable;
+  if (stream === undefined) {
+    target = optionsOrStream as Writable;
+  } else {
+    opts = (optionsOrStream as HashOptions) ?? {};
+    target = stream;
+  }
+  const serialized = serialize(value, opts);
+  target.write(serialized);
 };
 
 export default hash;
