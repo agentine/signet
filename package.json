@@ -40,7 +40,7 @@
     "@types/node": "^22.0.0",
     "@types/object-hash": "^3.0.6",
     "object-hash": "^3.0.0",
-    "typescript": "^5.4.0",
+    "typescript": "^6.0.2",
     "vitest": "^3.0.0"
   }
 }
